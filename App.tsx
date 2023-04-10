@@ -10,6 +10,8 @@ import {
   Roboto_400Regular,
 } from "@expo-google-fonts/roboto";
 import { Loading } from "./src/components/Loading";
+import { Home } from "./src/pages/Home";
+import { AppRoutes } from "./src/routes/app.routes";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -20,7 +22,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style="light" />
-      {!fontsLoaded ? <Loading /> : <SignIn />}
+      {!fontsLoaded ? <Loading /> : <Routes />}
     </ThemeProvider>
   );
 }

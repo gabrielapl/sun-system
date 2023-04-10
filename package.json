@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.3",
+    "@react-native-masked-view/masked-view": "0.2.8",
+    "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
-    "@types/styled-components-react-native": "^5.2.1",
     "expo": "~48.0.9",
     "expo-font": "~11.1.1",
     "expo-linear-gradient": "~12.1.2",
@@ -30,7 +31,9 @@
     "@rocketseat/eslint-config": "^1.2.0",
     "@types/react": "~18.0.14",
     "@types/styled-components": "^5.1.26",
+    "@types/styled-components-react-native": "^5.2.1",
     "eslint": "^8.37.0",
+    "react-native-svg-transformer": "^1.0.0",
     "typescript": "^4.9.4"
   },
   "private": true
