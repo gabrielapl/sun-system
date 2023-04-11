@@ -17,11 +17,11 @@ const categories: {
   icon: any;
   color: "blue" | "pink" | "cyan" | "yellow";
 }[] = [
-  { id: 1, name: "Planetas", icon: Planets, color: "blue" },
-  { id: 2, name: "Galáxias", icon: Galaxies, color: "yellow" },
-  { id: 3, name: "Estrelas", icon: Stars, color: "cyan" },
-  { id: 4, name: "Asteroides", icon: Asteroids, color: "pink" },
-];
+    { id: 1, name: "Planetas", icon: Planets, color: "blue" },
+    { id: 2, name: "Galáxias", icon: Galaxies, color: "yellow" },
+    { id: 3, name: "Estrelas", icon: Stars, color: "cyan" },
+    { id: 4, name: "Asteroides", icon: Asteroids, color: "pink" },
+  ];
 
 export function Home() {
   const [isActiveId, setIsActiveId] = useState(1);

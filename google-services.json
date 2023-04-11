@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "26698544969",
+    "project_id": "sun-system-9fbc2",
+    "storage_bucket": "sun-system-9fbc2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26698544969:android:abe8ef0f3e632e3d558c98",
+        "android_client_info": {
+          "package_name": "com.sun.system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26698544969-mvmgu355eg3du35cahpt901amgo3eke1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCunyCAcfpmuO-76eN2AU_yv7kQBfnu4Cs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26698544969-mvmgu355eg3du35cahpt901amgo3eke1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

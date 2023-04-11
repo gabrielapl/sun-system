@@ -5,7 +5,8 @@ import { AuthRoutes } from "./tabs.routes";
 export function Routes() {
   return (
     <NavigationContainer>
-      <AuthRoutes />
+
+      <AppRoutes />
     </NavigationContainer>
   );
 }
