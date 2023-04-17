@@ -15,8 +15,10 @@ import backgroundSolar from "../../assets/background.png";
 import { useTheme } from "styled-components";
 import { ArrowRight } from "phosphor-react-native";
 import { View } from "react-native";
+import { useAuth } from "../../hooks/auth";
 
 export function SignIn() {
+  const { singInWithGoogle, isUserLoading } = useAuth();
   const theme = useTheme();
 
   return (
@@ -32,7 +34,7 @@ export function SignIn() {
         <ButtonWrapper>
           <ButtonHeading>Pronto para a decolagem?</ButtonHeading>
 
-          <LoginButton>
+          <LoginButton disabled={isUserLoading} onPress={singInWithGoogle}>
             <LoginButtonBackground colors={theme.colors.gradient.button}>
               <LoginButtonText>Começar agora</LoginButtonText>
               <ArrowRight color={theme.colors.white} />

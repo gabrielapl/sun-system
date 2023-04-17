@@ -2,6 +2,7 @@
   "expo": {
     "name": "sun-system",
     "slug": "sun-system",
+    "scheme": "sun-system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#151515"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -21,6 +20,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#151515"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "64413712-74c8-4928-80a8-4602e94567f5"
       }
     }
   }

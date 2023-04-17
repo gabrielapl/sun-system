@@ -9,20 +9,22 @@ import {
 } from "./styles";
 
 import { SignOut } from "phosphor-react-native";
+import { useAuth } from "../../hooks/auth";
 
 export function Header() {
   const theme = useTheme();
+  const { user, signOut } = useAuth();
 
   return (
     <Container>
       <ContentWrapper>
         <Hi>
-          Olá, <Name>Ana Cecília</Name>
+          Olá, <Name>{user.name}</Name>
         </Hi>
 
         <Heading>O que você vai aprender hoje?</Heading>
       </ContentWrapper>
-      <SignOutButton>
+      <SignOutButton onPress={signOut}>
         <SignOut color={theme.colors.white} size={28} />
       </SignOutButton>
     </Container>

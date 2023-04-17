@@ -8,7 +8,7 @@ import { Search } from "../pages/Search";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-export function AuthRoutes() {
+export function AppRoutes() {
   const theme = useTheme();
 
   const androidStyles = {
@@ -19,7 +19,6 @@ export function AuthRoutes() {
     height: 80,
     paddingTop: 5,
     paddingBottom: 10,
-    marginTop: -20,
   };
 
   const iosStyles = {
@@ -28,7 +27,6 @@ export function AuthRoutes() {
     borderTopLeftRadius: 20,
     borderTopColor: "transparent",
     height: 100,
-    marginTop: -20,
   };
 
   return (

@@ -3,7 +3,7 @@ import { SignIn } from "../pages/SignIn";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-export function AppRoutes() {
+export function AuthRoutes() {
   return (
     <Navigator
       screenOptions={{
