@@ -37,18 +37,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
   const [accessToken, setAccessToken] = useState("");
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
+  /* const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "966667347547-4us1eodvu4kffllvvq2if4qostl0n8hj.apps.googleusercontent.com",
     androidClientId:
       "966667347547-oaph9fmsndl0f5mgonpd8i442l3f8o2i.apps.googleusercontent.com",
+    scopes: ["profile", "email"],
+  }); */
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId:
+      "966667347547-4us1eodvu4kffllvvq2if4qostl0n8hj.apps.googleusercontent.com",
+    redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     scopes: ["profile", "email"],
   });
 
   async function singInWithGoogle() {
     try {
       setIsUserLoading(true);
-      await promptAsync({ useProxy: false, showInRecents: true });
+      await promptAsync();
+      //await promptAsync({ useProxy: false, showInRecents: true });
     } catch (error) {
       console.log(error);
     } finally {
