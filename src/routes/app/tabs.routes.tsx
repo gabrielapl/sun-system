@@ -1,10 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home } from "../pages/Home";
 import { useTheme } from "styled-components";
-import { Heart, MagnifyingGlass, House } from "phosphor-react-native";
+import {
+  Heart,
+  MagnifyingGlass,
+  House,
+  Chat as ChatIcon,
+} from "phosphor-react-native";
 import { Text, Platform } from "react-native";
-import { Favorite } from "../pages/Favorite";
-import { Search } from "../pages/Search";
+import {
+  FavoriteStackScreen,
+  HomeStackScreen,
+  SearchStackScreen,
+} from "./stack.routes";
+import { Chat } from "../../pages/Chat";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -31,7 +39,7 @@ export function AppRoutes() {
 
   return (
     <Navigator
-      initialRouteName="Home"
+      initialRouteName="Home-tabs"
       screenOptions={{
         headerShown: false,
         tabBarStyle: Platform.OS == "android" ? androidStyles : iosStyles,
@@ -51,8 +59,8 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name="Home"
-        component={Home}
+        name="Home-tabs"
+        component={HomeStackScreen}
         options={{
           title: "Home",
           tabBarIcon: () => {
@@ -61,8 +69,8 @@ export function AppRoutes() {
         }}
       />
       <Screen
-        name="Search"
-        component={Search}
+        name="Search-tabs"
+        component={SearchStackScreen}
         options={{
           title: "Procurar",
           tabBarIcon: () => {
@@ -71,12 +79,22 @@ export function AppRoutes() {
         }}
       />
       <Screen
-        name="Favorite"
-        component={Favorite}
+        name="Favorite-tabs"
+        component={FavoriteStackScreen}
         options={{
           title: "Favoritos",
           tabBarIcon: () => {
             return <Heart color={theme.colors.white} size={24} />;
+          },
+        }}
+      />
+      <Screen
+        name="chat"
+        component={Chat}
+        options={{
+          title: "Chat",
+          tabBarIcon: () => {
+            return <ChatIcon color={theme.colors.white} size={24} />;
           },
         }}
       />

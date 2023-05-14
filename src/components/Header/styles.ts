@@ -28,5 +28,3 @@ export const Heading = styled.Text`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: 16px;
 `;
-
-export const SignOutButton = styled.TouchableOpacity``;

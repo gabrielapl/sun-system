@@ -1,15 +1,9 @@
 import { useTheme } from "styled-components";
-import {
-  Container,
-  ContentWrapper,
-  Heading,
-  Hi,
-  Name,
-  SignOutButton,
-} from "./styles";
+import { Container, ContentWrapper, Heading, Hi, Name } from "./styles";
 
 import { SignOut } from "phosphor-react-native";
 import { useAuth } from "../../hooks/auth";
+import { SignOutButton } from "../SignOutButton";
 
 export function Header() {
   const theme = useTheme();
@@ -24,9 +18,7 @@ export function Header() {
 
         <Heading>O que você vai aprender hoje?</Heading>
       </ContentWrapper>
-      <SignOutButton onPress={signOut}>
-        <SignOut color={theme.colors.white} size={28} />
-      </SignOutButton>
+      <SignOutButton />
     </Container>
   );
 }

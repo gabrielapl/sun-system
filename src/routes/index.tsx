@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthRoutes } from "./app.routes";
-import { AppRoutes } from "./tabs.routes";
+import { AuthRoutes } from "./auth.routes";
+import { AppRoutes } from "./app/tabs.routes";
 import { useAuth } from "../hooks/auth";
 import { useTheme } from "styled-components";
 import { View } from "react-native";
