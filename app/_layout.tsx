@@ -8,9 +8,11 @@ import {
   Roboto_400Regular,
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto'
+import { AuthProvider } from '../src/context/AuthContext'
+import { useAuth } from '../src/hooks/auth'
 
 export default function Layout() {
-  const [isUserAuthenticated] = useState(true)
+  const { user } = useAuth()
 
   const [hasLoadedFonts] = useFonts({
     Roboto_400Regular,
@@ -22,18 +24,20 @@ export default function Layout() {
   }
 
   return (
-    <View className="flex-1">
-      <StatusBar style="light" backgroundColor="transparent" translucent />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          // contentStyle: { backgroundColor: 'transparent' },
-          animation: 'fade',
-        }}
-      >
-        <Stack.Screen name="index" redirect={isUserAuthenticated} />
-        <Stack.Screen name="(tabs)" />
-      </Stack>
-    </View>
+    <AuthProvider>
+      <View className="flex-1">
+        <StatusBar style="light" backgroundColor="transparent" translucent />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            // contentStyle: { backgroundColor: 'transparent' },
+            animation: 'fade',
+          }}
+        >
+          <Stack.Screen name="index" redirect={!!user} />
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </View>
+    </AuthProvider>
   )
 }

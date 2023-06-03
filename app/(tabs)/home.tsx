@@ -1,9 +1,21 @@
-import { View, Text } from 'react-native'
+import { ImageBackground, View } from 'react-native'
+
+import starsBg from '../../src/assets/stars.png'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Header } from '../../src/pages/home/header'
 
 export default function Home() {
+  const { bottom, top } = useSafeAreaInsets()
+
   return (
-    <View className="flex-1 items-center justify-center bg-black text-white">
-      <Text>Home</Text>
-    </View>
+    <ImageBackground
+      className="flex-1 bg-black"
+      source={starsBg}
+      resizeMode="cover"
+    >
+      <View style={{ paddingBottom: bottom, paddingTop: top }}>
+        <Header />
+      </View>
+    </ImageBackground>
   )
 }

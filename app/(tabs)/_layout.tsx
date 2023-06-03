@@ -9,6 +9,8 @@ export default function Layout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.65)',
+        tabBarActiveTintColor: '#FFF',
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -77,7 +79,7 @@ export default function Layout() {
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: '7f5d70',
+    shadowColor: '#151515',
     shadowOffset: {
       width: 0,
       height: 10,

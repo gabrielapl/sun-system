@@ -1,9 +1,14 @@
-import { View, Text } from 'react-native'
+import { ImageBackground } from 'react-native'
+
+import starsBg from '../../src/assets/stars.png'
+import React from 'react'
 
 export default function Search() {
   return (
-    <View className="text-whit flex-1 items-center justify-center bg-black">
-      <Text>Search</Text>
-    </View>
+    <ImageBackground
+      className="flex-1 bg-black"
+      source={starsBg}
+      resizeMode="cover"
+    ></ImageBackground>
   )
 }
