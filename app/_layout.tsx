@@ -34,6 +34,7 @@ export default function Layout() {
           <Stack.Screen name="index" />
           <Stack.Screen name="signIn" />
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="entity" />
         </Stack>
       </View>
     </AuthProvider>

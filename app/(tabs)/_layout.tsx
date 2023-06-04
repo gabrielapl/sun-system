@@ -44,9 +44,9 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="search"
+        name="search/[search]"
         options={{
-          title: 'Home',
+          title: 'Search',
           tabBarIcon: ({ size, color, focused }) => {
             return (
               <View

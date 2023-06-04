@@ -5,7 +5,6 @@ import * as SecureStore from 'expo-secure-store'
 import axios from 'axios'
 import { useRouter } from 'expo-router'
 import { LogBox } from 'react-native'
-import { makeRedirectUri } from 'expo-auth-session'
 
 LogBox.ignoreLogs([
   'The useProxy option is deprecated and will be removed in a future release, for more information check https://expo.fyi/auth-proxy-migration.',
@@ -54,7 +53,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     await SecureStore.deleteItemAsync('accessToken')
 
     router.push('/signIn')
-    setUser({} as UserProps)
+    setUser(null)
   }
 
   async function handleGoogleOAccessToken(accessToken: string) {
@@ -77,6 +76,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(response.data)
     } catch (error) {
       console.log(error)
+      await SecureStore.deleteItemAsync('accessToken')
+      router.push('/signIn')
+      setUser(null)
     }
   }
 
