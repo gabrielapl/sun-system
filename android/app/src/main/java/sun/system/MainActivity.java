@@ -1,4 +1,4 @@
-package com.sunsystem;
+package sun.system;
 
 import android.os.Build;
 import android.os.Bundle;

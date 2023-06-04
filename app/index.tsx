@@ -1,20 +1,12 @@
-import { View, ImageBackground } from 'react-native'
+import { ImageBackground } from 'react-native'
 
-import { Heading } from '../src/pages/signIn/heading'
-import { LoginWrapper } from '../src/pages/signIn/loginWrapper'
-
-import background from '../src/assets/background.png'
+import background from '../assets/splash.png'
 
 export default function App() {
   return (
     <ImageBackground
       source={background}
-      className="flex-1 items-center justify-between bg-black"
-      resizeMode="cover"
-    >
-      <View />
-      <Heading />
-      <LoginWrapper />
-    </ImageBackground>
+      className="flex-1  bg-brand_background"
+    />
   )
 }

@@ -1,4 +1,4 @@
-package com.sunsystem;
+package sun.system;
 
 import android.app.Application;
 import android.content.res.Configuration;

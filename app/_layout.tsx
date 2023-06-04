@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import { SplashScreen, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React from 'react'
 
 import {
   useFonts,
@@ -9,11 +9,8 @@ import {
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto'
 import { AuthProvider } from '../src/context/AuthContext'
-import { useAuth } from '../src/hooks/auth'
 
 export default function Layout() {
-  const { user } = useAuth()
-
   const [hasLoadedFonts] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
@@ -34,7 +31,8 @@ export default function Layout() {
             animation: 'fade',
           }}
         >
-          <Stack.Screen name="index" redirect={!!user} />
+          <Stack.Screen name="index" />
+          <Stack.Screen name="signIn" />
           <Stack.Screen name="(tabs)" />
         </Stack>
       </View>

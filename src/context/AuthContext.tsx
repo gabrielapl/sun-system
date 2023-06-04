@@ -4,7 +4,12 @@ import * as Google from 'expo-auth-session/providers/google'
 import * as SecureStore from 'expo-secure-store'
 import axios from 'axios'
 import { useRouter } from 'expo-router'
-import { Loading } from '../pages/loading'
+import { LogBox } from 'react-native'
+import { makeRedirectUri } from 'expo-auth-session'
+
+LogBox.ignoreLogs([
+  'The useProxy option is deprecated and will be removed in a future release, for more information check https://expo.fyi/auth-proxy-migration.',
+])
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -21,6 +26,7 @@ interface IAuthContextData {
   signInWithGoogle: () => void
   signOut: () => void
   user: UserProps
+  isAuthenticationLoading: boolean
 }
 
 export const AuthContext = createContext({} as IAuthContextData)
@@ -29,28 +35,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter()
 
   const [user, setUser] = useState<UserProps | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthenticationLoading, setIsAuthenticationLoading] = useState(false)
 
   const [, response, promptAsync] = Google.useAuthRequest({
-    clientId:
+    expoClientId:
       '966667347547-4us1eodvu4kffllvvq2if4qostl0n8hj.apps.googleusercontent.com',
+    androidClientId:
+      '966667347547-oaph9fmsndl0f5mgonpd8i442l3f8o2i.apps.googleusercontent.com',
     scopes: ['profile', 'email'],
   })
 
   async function signInWithGoogle() {
+    setIsAuthenticationLoading(true)
     await promptAsync()
   }
 
   async function signOut() {
-    setUser({} as UserProps)
     await SecureStore.deleteItemAsync('accessToken')
 
-    router.push('/')
+    router.push('/signIn')
+    setUser({} as UserProps)
   }
 
   async function handleGoogleOAccessToken(accessToken: string) {
     getUserInfo(accessToken)
     await SecureStore.setItemAsync('accessToken', accessToken)
+    setIsAuthenticationLoading(false)
 
     router.push('/home')
   }
@@ -85,6 +95,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         getUserInfo(accessToken)
 
         router.push('/home')
+      } else {
+        router.push('/signIn')
       }
     }
 
@@ -92,12 +104,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signOut }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGoogle, signOut, isAuthenticationLoading }}
+    >
       {children}
     </AuthContext.Provider>
   )

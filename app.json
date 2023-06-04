@@ -13,10 +13,20 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      "@react-native-firebase/app"
+    ],
     "android": {
+      "package": "sun.system",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#151515"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "64413712-74c8-4928-80a8-4602e94567f5"
       }
     }
   }
