@@ -14,7 +14,7 @@ export function Categories() {
       <View className="w-full flex-row justify-between">
         {categories.map((category) => (
           <CategoryCard
-            key={category.name}
+            key={category.id}
             data={category}
             isActive={category.id === categorySelected}
           />

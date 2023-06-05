@@ -1,6 +1,6 @@
 export interface CategoryDTO {
   id: string
   icon: string
-  name: string
-  color: Array<string>
+  title: string
+  colors: Array<string>
 }

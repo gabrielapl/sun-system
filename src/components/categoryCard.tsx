@@ -19,10 +19,10 @@ export function CategoryCard({ isActive, data }: CategoryCardProps) {
     >
       <LinearGradient
         className="h-20 w-20 items-center justify-center rounded-lg"
-        colors={data.color}
+        colors={data.colors}
       >
         <SvgUri className="mb-2 h-8 w-8" uri={data.icon} />
-        <Text className="font-body text-sm text-white">{data.name}</Text>
+        <Text className="font-body text-sm text-white">{data.title}</Text>
       </LinearGradient>
     </TouchableOpacity>
   )
