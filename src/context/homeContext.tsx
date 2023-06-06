@@ -1,11 +1,11 @@
 import { ReactNode, createContext, useEffect, useState } from 'react'
 import { CategoryDTO } from '../dtos/categoryDTO'
 import firestore from '@react-native-firebase/firestore'
-import { EntityDTO } from '../dtos/entityDTO'
+import { SmallEntityDTO } from '../dtos/entityDTO'
 
 export interface HomeContextDataProps {
   categories: Array<CategoryDTO>
-  entities: Array<EntityDTO>
+  entities: Array<SmallEntityDTO>
   categorySelected: string
   handleSelectCategory: (id: string) => void
 }
@@ -19,7 +19,7 @@ export const HomeContext = createContext({} as HomeContextDataProps)
 export function HomeContextProvider({ children }: HomeProviderProps) {
   const [categorySelected, setCategorySelected] = useState('planets')
   const [categories, setCategories] = useState<CategoryDTO[]>([])
-  const [entities, setEntities] = useState<EntityDTO[]>([])
+  const [entities, setEntities] = useState<SmallEntityDTO[]>([])
 
   function handleSelectCategory(id: string) {
     setCategorySelected(id)
@@ -28,6 +28,7 @@ export function HomeContextProvider({ children }: HomeProviderProps) {
   useEffect(() => {
     const subscriber = firestore()
       .collection('space-entities')
+      .where('type', '==', categorySelected)
       .onSnapshot((snapshot) => {
         const data = snapshot.docs.map((doc) => {
           const { name, icon } = doc.data()
@@ -43,7 +44,7 @@ export function HomeContextProvider({ children }: HomeProviderProps) {
       })
 
     return subscriber
-  }, [])
+  }, [categorySelected])
 
   useEffect(() => {
     const subscriber = firestore()

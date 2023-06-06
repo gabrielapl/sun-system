@@ -1,23 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import Icon from '@expo/vector-icons/Feather'
+import { toggleFavoriteFirebase } from '../services/firebase'
 
 interface FavoriteButtonProps {
-  // entity_id: string
+  entity_id: string
   color: 'white' | 'dark'
-  // hasFavorite: boolean
+  hasFavorite: boolean
 }
 
-export function FavoriteButton({ color }: FavoriteButtonProps) {
-  const [isFavorite] = useState(false)
+export function FavoriteButton({
+  color,
+  hasFavorite,
+  entity_id,
+}: FavoriteButtonProps) {
+  const [isFavorite, setFavorite] = useState(false)
 
   const colors = {
     white: '#FFF',
     dark: '#151515',
   }
 
+  async function handleFavorite() {
+    const isFavorite = await toggleFavoriteFirebase(entity_id)
+    setFavorite(isFavorite)
+  }
+
+  useEffect(() => {
+    setFavorite(hasFavorite)
+  }, [hasFavorite])
+
   return (
-    <TouchableOpacity onPress={() => {}}>
+    <TouchableOpacity onPress={handleFavorite}>
       <Icon
         name="bookmark"
         size={24}
