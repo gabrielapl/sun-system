@@ -11,7 +11,7 @@ interface LargeCardEntityProps {
 
 export function LargeCardEntity({ data }: LargeCardEntityProps) {
   return (
-    <View className="w-full flex-row overflow-hidden rounded-lg bg-brand_background">
+    <View className="mb-4 w-full flex-row overflow-hidden rounded-lg bg-brand_background">
       <SvgUri width={150} height={150} uri={data.icon} />
 
       <View className="ml-4 mt-4 pb-4">
