@@ -1,4 +1,4 @@
-import { FlatList, ImageBackground, View, Text } from 'react-native'
+import { FlatList, ImageBackground, Keyboard, View } from 'react-native'
 
 import starsBg from '../../../src/assets/stars.png'
 import React, { useEffect, useState } from 'react'
@@ -7,6 +7,7 @@ import { MiniHeader } from '../../../src/components/miniHeader'
 import { Input } from '../../../src/components/input'
 import { useLocalSearchParams } from 'expo-router'
 import { getEntityByName } from '../../../src/services/firebase'
+import { LargeCardEntity } from '../../../src/components/LargeCardEntity'
 import { EntityProps } from '../../../src/dtos/entityDTO'
 
 type RouteParams = {
@@ -21,16 +22,20 @@ export default function Search() {
   const params = useLocalSearchParams<RouteParams>()
   const { search } = params
 
-  async function fetchEntity() {
-    const data = await getEntityByName(searchValue)
+  async function fetchEntity(search?: string) {
+    const data = await getEntityByName(search)
 
     setEntities(data)
+    Keyboard.dismiss()
   }
 
   useEffect(() => {
     if (search) {
       setSearchValue(search)
+      fetchEntity(search)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search])
 
   return (
@@ -44,7 +49,7 @@ export default function Search() {
 
         <Input
           placeholder="Procure planetas, asteroides, estrelas..."
-          onPress={fetchEntity}
+          onPress={() => fetchEntity(searchValue)}
           onChangeText={(text) => setSearchValue(text)}
           value={searchValue}
         />
@@ -53,9 +58,7 @@ export default function Search() {
           data={entities}
           className="mt-10"
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Text className="text-white">{item.name}</Text>
-          )}
+          renderItem={({ item }) => <LargeCardEntity data={item} />}
         />
       </View>
     </ImageBackground>

@@ -16,6 +16,7 @@ export default function Home() {
   const [searchValue, setSearchValue] = useState('')
 
   function handleSearch() {
+    setSearchValue('')
     router.push(`/search/${searchValue}`)
   }
 
@@ -35,6 +36,7 @@ export default function Home() {
               placeholder="Procure planetas, asteroides, estrelas..."
               onChangeText={(text) => setSearchValue(text)}
               value={searchValue}
+              needDisabledInput
             />
           </View>
 

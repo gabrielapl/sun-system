@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore'
 import { FavoritesDTO } from '../dtos/favoritesDTO'
-import { CompleteEntityDTO, SmallEntityDTO } from '../dtos/entityDTO'
+import { EntityDTO, EntityProps } from '../dtos/entityDTO'
 
 export async function toggleFavoriteFirebase(
   entity_id: string,
@@ -34,17 +34,15 @@ export async function toggleFavoriteFirebase(
   }
 }
 
-export async function getFavoritesBasedUser(): Promise<SmallEntityDTO[]> {
-  const data: SmallEntityDTO[] = []
+export async function getFavoritesBasedUser(): Promise<EntityDTO[]> {
+  const data: EntityDTO[] = []
   const db = firestore()
 
   const docRef = db.collection<FavoritesDTO>('favorites').doc('1')
 
   const entity_ids = (await docRef.get()).data().entity_ids
 
-  const favoritesData = await db
-    .collection<SmallEntityDTO>('space-entities')
-    .get()
+  const favoritesData = await db.collection<EntityDTO>('space-entities').get()
 
   for await (const entity of favoritesData.docs) {
     if (entity_ids.includes(entity.id)) {
@@ -58,10 +56,16 @@ export async function getFavoritesBasedUser(): Promise<SmallEntityDTO[]> {
   return data
 }
 
-export async function getEntityByName(valueSearch: string) {
+export async function getEntityByName(
+  valueSearch: string,
+): Promise<EntityProps[]> {
+  if (typeof valueSearch !== 'string') {
+    return []
+  }
+
   const db = firestore()
 
-  const entityCollection = db.collection<CompleteEntityDTO>('space-entities')
+  const entityCollection = db.collection<EntityDTO>('space-entities')
 
   const entityDocRef = entityCollection.where('name', '==', valueSearch)
 
@@ -74,7 +78,7 @@ export async function getEntityByName(valueSearch: string) {
       .get()
 
     const data = entityDocData.docs.map((entity) => {
-      const { name, resume } = entity.data()
+      const { name, resume, icon } = entity.data()
 
       let hasFavorite = false
 
@@ -88,6 +92,7 @@ export async function getEntityByName(valueSearch: string) {
         id: entity.id,
         name,
         resume,
+        icon,
         hasFavorite,
       }
     })

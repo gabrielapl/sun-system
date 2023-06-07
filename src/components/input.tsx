@@ -4,9 +4,14 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 interface InputProps extends TextInputProps {
   onPress: () => void
+  needDisabledInput?: boolean
 }
 
-export function Input({ onPress, ...rest }: InputProps) {
+export function Input({
+  onPress,
+  needDisabledInput = false,
+  ...rest
+}: InputProps) {
   return (
     <View className="relative h-14 w-full flex-row">
       <TextInput
@@ -18,8 +23,14 @@ export function Input({ onPress, ...rest }: InputProps) {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={onPress}
-        className={rest.value.trim() ? 'opacity-100' : 'opacity-70'}
-        disabled={!rest.value.trim()}
+        className={
+          needDisabledInput
+            ? rest.value.trim()
+              ? 'opacity-100'
+              : 'opacity-70'
+            : 'opacity-100'
+        }
+        disabled={needDisabledInput ? !rest.value.trim() : false}
       >
         <LinearGradient
           start={{ x: 0, y: 0 }}
