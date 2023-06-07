@@ -4,10 +4,11 @@ import { EntityDTO, EntityProps } from '../dtos/entityDTO'
 
 export async function toggleFavoriteFirebase(
   entity_id: string,
+  user_id: string,
 ): Promise<boolean> {
   const db = firestore()
 
-  const docRef = db.collection<FavoritesDTO>('favorites').doc('1')
+  const docRef = db.collection<FavoritesDTO>('favorites').doc(user_id)
 
   const docData = await docRef.get()
 
@@ -34,30 +35,39 @@ export async function toggleFavoriteFirebase(
   }
 }
 
-export async function getFavoritesBasedUser(): Promise<EntityDTO[]> {
+export async function getFavoritesBasedUser(
+  user_id: string,
+): Promise<EntityDTO[]> {
   const data: EntityDTO[] = []
   const db = firestore()
 
-  const docRef = db.collection<FavoritesDTO>('favorites').doc('1')
+  const docRef = db.collection<FavoritesDTO>('favorites').doc(user_id)
 
-  const entity_ids = (await docRef.get()).data().entity_ids
+  const docData = await docRef.get()
 
-  const favoritesData = await db.collection<EntityDTO>('space-entities').get()
+  if (docData.exists) {
+    const entity_ids = docData.data().entity_ids
 
-  for await (const entity of favoritesData.docs) {
-    if (entity_ids.includes(entity.id)) {
-      data.push({
-        id: entity.id,
-        ...entity.data(),
-      })
+    const favoritesData = await db.collection<EntityDTO>('space-entities').get()
+
+    for await (const entity of favoritesData.docs) {
+      if (entity_ids.includes(entity.id)) {
+        data.push({
+          id: entity.id,
+          ...entity.data(),
+        })
+      }
     }
+
+    return data
   }
 
-  return data
+  return []
 }
 
 export async function getEntityByName(
   valueSearch: string,
+  user_id: string,
 ): Promise<EntityProps[]> {
   if (typeof valueSearch !== 'string') {
     return []
@@ -74,7 +84,7 @@ export async function getEntityByName(
   if (!entityDocData.empty) {
     const favoriteDocData = await db
       .collection<FavoritesDTO>('favorites')
-      .doc('1')
+      .doc(user_id)
       .get()
 
     const data = entityDocData.docs.map((entity) => {

@@ -19,6 +19,7 @@ interface AuthProviderProps {
 interface UserProps {
   name: string
   avatarUrl: string
+  id: string
 }
 
 interface IAuthContextData {

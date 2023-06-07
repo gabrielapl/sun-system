@@ -5,16 +5,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { MiniHeader } from '../../src/components/miniHeader'
 import { useCallback, useState } from 'react'
 import { getFavoritesBasedUser } from '../../src/services/firebase'
-import { SmallEntityDTO } from '../../src/dtos/entityDTO'
 import { useFocusEffect } from 'expo-router'
 import { MiniCardNavigation } from '../../src/components/miniCardNavigation'
+import { EntityDTO } from '../../src/dtos/entityDTO'
+import { useAuth } from '../../src/hooks/auth'
 
 export default function Favorites() {
-  const { bottom, top } = useSafeAreaInsets()
-  const [favorites, setFavorites] = useState<SmallEntityDTO[]>([])
+  const { user } = useAuth()
+  const { bottom } = useSafeAreaInsets()
+  const [favorites, setFavorites] = useState<EntityDTO[]>([])
 
   async function fetchFavorites() {
-    const favoritesData = await getFavoritesBasedUser()
+    const favoritesData = await getFavoritesBasedUser(user.id)
 
     setFavorites(favoritesData)
   }
@@ -31,11 +33,12 @@ export default function Favorites() {
       source={starsBg}
       resizeMode="cover"
     >
-      <View className="px-5" style={{ paddingBottom: bottom, paddingTop: top }}>
+      <View className="px-5">
         <MiniHeader title="Favoritos" />
 
         <FlatList
           data={favorites}
+          contentContainerStyle={{ paddingBottom: bottom + 250 }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <MiniCardNavigation

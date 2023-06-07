@@ -4,6 +4,7 @@ import { SvgUri } from 'react-native-svg'
 import { FavoriteButton } from './favoriteButton'
 import Icon from '@expo/vector-icons/Feather'
 import React from 'react'
+import { Link } from 'expo-router'
 
 interface LargeCardEntityProps {
   data: EntityProps
@@ -30,12 +31,19 @@ export function LargeCardEntity({ data }: LargeCardEntityProps) {
           {data.resume.substring(0, 100).concat('...')}
         </Text>
 
-        <TouchableOpacity className="flex-row items-center pb-4  pt-5">
-          <Text className="mr-2 font-title text-sm text-white">
-            Continue lendo
-          </Text>
-          <Icon name="arrow-right" color="#EF5F53" size={20} />
-        </TouchableOpacity>
+        <Link
+          href={{
+            pathname: '/entity/' + data.id,
+          }}
+          asChild
+        >
+          <TouchableOpacity className="flex-row items-center pb-4  pt-5">
+            <Text className="mr-2 font-title text-sm text-white">
+              Continue lendo
+            </Text>
+            <Icon name="arrow-right" color="#EF5F53" size={20} />
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   )

@@ -10,10 +10,16 @@ import Icon from '@expo/vector-icons/Feather'
 import { useEffect, useState } from 'react'
 
 interface AccordionProps {
+  title: string
+  text: string
   needNotDivision?: boolean
 }
 
-export function Accordion({ needNotDivision = false }: AccordionProps) {
+export function Accordion({
+  text,
+  title,
+  needNotDivision = false,
+}: AccordionProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   useEffect(() => {
@@ -35,17 +41,14 @@ export function Accordion({ needNotDivision = false }: AccordionProps) {
       >
         <Icon name="chevron-down" size={24} color={'#151515'} />
         <Text className="ml-4 font-title text-base text-brand_background">
-          Introdução
+          {title}
         </Text>
       </TouchableOpacity>
 
       {isExpanded && (
-        <View>
+        <View className="ml-2">
           <Text className="mt-5 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque,
-            maxime. Commodi earum impedit molestias eos quos cum natus eius
-            corrupti aut libero vero sequi minus illum magnam at, fugit
-            dignissimos.
+            {text}
           </Text>
         </View>
       )}

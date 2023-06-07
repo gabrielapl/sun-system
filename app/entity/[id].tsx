@@ -6,14 +6,18 @@ import React, { useEffect, useState } from 'react'
 import EntityPage from '../../src/pages/entityPage'
 import { Accordion } from '../../src/components/accordion'
 import firestore from '@react-native-firebase/firestore'
-import { CompleteEntityDTO, EntityProps } from '../../src/dtos/entityDTO'
+import { EntityDTO, EntityProps } from '../../src/dtos/entityDTO'
 import { FavoritesDTO } from '../../src/dtos/favoritesDTO'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useAuth } from '../../src/hooks/auth'
 
 type RouteParams = {
   id: string
 }
 
 export default function Entity() {
+  const { user } = useAuth()
+  const { bottom } = useSafeAreaInsets()
   const params = useLocalSearchParams<RouteParams>()
   const { id } = params
 
@@ -22,7 +26,7 @@ export default function Entity() {
   async function getEntity() {
     const db = firestore()
 
-    const entityCollection = db.collection<CompleteEntityDTO>('space-entities')
+    const entityCollection = db.collection<EntityDTO>('space-entities')
 
     const entityDocRef = entityCollection.doc(id)
 
@@ -31,10 +35,10 @@ export default function Entity() {
     if (entityDocData.exists) {
       const favoriteDocData = await db
         .collection<FavoritesDTO>('favorites')
-        .doc('1')
+        .doc(user.id)
         .get()
 
-      const { name, resume } = entityDocData.data()
+      const { name, resume, icon } = entityDocData.data()
 
       let hasFavorite = false
 
@@ -49,6 +53,7 @@ export default function Entity() {
         name,
         resume,
         hasFavorite,
+        icon,
       })
     }
   }
@@ -60,7 +65,11 @@ export default function Entity() {
   }, [id])
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView
+      className="flex-1 bg-white"
+      contentContainerStyle={{ paddingBottom: bottom + 50 }}
+      showsVerticalScrollIndicator={false}
+    >
       <EntityPage.Header />
 
       <View className="mt-6 flex-1 bg-white px-5">
@@ -74,9 +83,23 @@ export default function Entity() {
           {entity.resume}
         </Text>
 
-        <Accordion />
-        <Accordion />
-        <Accordion needNotDivision />
+        <Accordion
+          title="Introdução"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
+        />
+        <Accordion
+          title="Características Físicas"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
+        />
+        <Accordion
+          title="Hidrologia"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
+        />
+        <Accordion
+          title="Geografia"
+          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
+          needNotDivision
+        />
       </View>
     </ScrollView>
   )

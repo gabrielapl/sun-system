@@ -1,20 +1,22 @@
 import { FlatList, ImageBackground, Keyboard, View } from 'react-native'
 
 import starsBg from '../../../src/assets/stars.png'
-import React, { useEffect, useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { MiniHeader } from '../../../src/components/miniHeader'
 import { Input } from '../../../src/components/input'
-import { useLocalSearchParams } from 'expo-router'
+import { useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { getEntityByName } from '../../../src/services/firebase'
 import { LargeCardEntity } from '../../../src/components/LargeCardEntity'
 import { EntityProps } from '../../../src/dtos/entityDTO'
+import { useAuth } from '../../../src/hooks/auth'
 
 type RouteParams = {
   search?: string
 }
 
 export default function Search() {
+  const { user } = useAuth()
   const [entities, setEntities] = useState<EntityProps[]>([])
   const { bottom, top } = useSafeAreaInsets()
   const [searchValue, setSearchValue] = useState('')
@@ -23,20 +25,20 @@ export default function Search() {
   const { search } = params
 
   async function fetchEntity(search?: string) {
-    const data = await getEntityByName(search)
+    const data = await getEntityByName(search, user.id)
 
     setEntities(data)
     Keyboard.dismiss()
   }
 
-  useEffect(() => {
-    if (search) {
-      setSearchValue(search)
-      fetchEntity(search)
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search])
+  useFocusEffect(
+    useCallback(() => {
+      if (search) {
+        setSearchValue(search)
+        fetchEntity(search)
+      }
+    }, []),
+  )
 
   return (
     <ImageBackground
@@ -44,7 +46,7 @@ export default function Search() {
       source={starsBg}
       resizeMode="cover"
     >
-      <View className="px-5" style={{ paddingBottom: bottom, paddingTop: top }}>
+      <View className="px-5" style={{ paddingTop: top }}>
         <MiniHeader title="Resultados da busca" />
 
         <Input
@@ -57,6 +59,7 @@ export default function Search() {
         <FlatList
           data={entities}
           className="mt-10"
+          contentContainerStyle={{ paddingBottom: bottom + 300 }}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <LargeCardEntity data={item} />}
         />

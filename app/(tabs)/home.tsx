@@ -1,4 +1,4 @@
-import { ImageBackground, View } from 'react-native'
+import { ImageBackground, ScrollView, View } from 'react-native'
 
 import starsBg from '../../src/assets/stars.png'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -27,7 +27,10 @@ export default function Home() {
         source={starsBg}
         resizeMode="cover"
       >
-        <View style={{ paddingBottom: bottom, paddingTop: top }}>
+        <ScrollView
+          style={{ paddingTop: top }}
+          contentContainerStyle={{ paddingBottom: bottom + 200 }}
+        >
           <Header />
 
           <View className="mt-14 px-5">
@@ -43,7 +46,7 @@ export default function Home() {
           <Categories />
 
           <EntitiesList />
-        </View>
+        </ScrollView>
       </ImageBackground>
     </HomeContextProvider>
   )
