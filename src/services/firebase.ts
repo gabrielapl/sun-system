@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore'
 import { FavoritesDTO } from '../dtos/favoritesDTO'
+import { CompleteEntityDTO, SmallEntityDTO } from '../dtos/entityDTO'
 
 export async function toggleFavoriteFirebase(
   entity_id: string,
@@ -30,5 +31,67 @@ export async function toggleFavoriteFirebase(
   } else {
     docRef.set({ entity_ids: [entity_id] })
     return true
+  }
+}
+
+export async function getFavoritesBasedUser(): Promise<SmallEntityDTO[]> {
+  const data: SmallEntityDTO[] = []
+  const db = firestore()
+
+  const docRef = db.collection<FavoritesDTO>('favorites').doc('1')
+
+  const entity_ids = (await docRef.get()).data().entity_ids
+
+  const favoritesData = await db
+    .collection<SmallEntityDTO>('space-entities')
+    .get()
+
+  for await (const entity of favoritesData.docs) {
+    if (entity_ids.includes(entity.id)) {
+      data.push({
+        id: entity.id,
+        ...entity.data(),
+      })
+    }
+  }
+
+  return data
+}
+
+export async function getEntityByName(valueSearch: string) {
+  const db = firestore()
+
+  const entityCollection = db.collection<CompleteEntityDTO>('space-entities')
+
+  const entityDocRef = entityCollection.where('name', '==', valueSearch)
+
+  const entityDocData = await entityDocRef.get()
+
+  if (!entityDocData.empty) {
+    const favoriteDocData = await db
+      .collection<FavoritesDTO>('favorites')
+      .doc('1')
+      .get()
+
+    const data = entityDocData.docs.map((entity) => {
+      const { name, resume } = entity.data()
+
+      let hasFavorite = false
+
+      if (favoriteDocData.exists) {
+        const { entity_ids } = favoriteDocData.data()
+
+        hasFavorite = entity_ids.includes(entity.id)
+      }
+
+      return {
+        id: entity.id,
+        name,
+        resume,
+        hasFavorite,
+      }
+    })
+
+    return data
   }
 }

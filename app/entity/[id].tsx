@@ -6,15 +6,11 @@ import React, { useEffect, useState } from 'react'
 import EntityPage from '../../src/pages/entityPage'
 import { Accordion } from '../../src/components/accordion'
 import firestore from '@react-native-firebase/firestore'
-import { CompleteEntityDTO } from '../../src/dtos/entityDTO'
+import { CompleteEntityDTO, EntityProps } from '../../src/dtos/entityDTO'
 import { FavoritesDTO } from '../../src/dtos/favoritesDTO'
 
 type RouteParams = {
   id: string
-}
-
-interface EntityProps extends CompleteEntityDTO {
-  hasFavorite: boolean
 }
 
 export default function Entity() {

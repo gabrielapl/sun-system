@@ -10,3 +10,7 @@ export interface SmallEntityDTO extends EntityDTO {
 export interface CompleteEntityDTO extends EntityDTO {
   resume: string
 }
+
+export interface EntityProps extends CompleteEntityDTO {
+  hasFavorite: boolean
+}
