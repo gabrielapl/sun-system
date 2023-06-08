@@ -1,18 +1,42 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { useLocalSearchParams } from 'expo-router'
-import { ScrollView, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, Text, View, Image } from 'react-native'
 
 import React, { useEffect, useState } from 'react'
 import EntityPage from '../../src/pages/entityPage'
 import { Accordion } from '../../src/components/accordion'
 import firestore from '@react-native-firebase/firestore'
-import { EntityDTO, EntityProps } from '../../src/dtos/entityDTO'
 import { FavoritesDTO } from '../../src/dtos/favoritesDTO'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useAuth } from '../../src/hooks/auth'
+import { AccordionRow } from '../../src/pages/entityPage/accordionRow'
 
 type RouteParams = {
   id: string
+}
+
+interface EntityProps {
+  id: string
+  name: string
+  type: string
+  resume: string
+  introduction: string
+  icon: string
+  image: string
+  features: {
+    orbitalPeriod: string
+    orbitalSpeed: string
+    rotationDuration: string
+    radius: string
+    diameter: string
+    sunDistance: string
+    oneWayLightToTheSun: string
+    temperature: string
+    gravity: string
+  }
+  composition: string
+  curiosities: string[]
+  hasFavorite: boolean
 }
 
 export default function Entity() {
@@ -20,13 +44,15 @@ export default function Entity() {
   const { bottom } = useSafeAreaInsets()
   const params = useLocalSearchParams<RouteParams>()
   const { id } = params
+  const [isLoading, setIsLoading] = useState(true)
 
   const [entity, setEntity] = useState<EntityProps>({} as EntityProps)
 
   async function getEntity() {
+    setIsLoading(true)
     const db = firestore()
 
-    const entityCollection = db.collection<EntityDTO>('space-entities')
+    const entityCollection = db.collection<EntityProps>('space-entities')
 
     const entityDocRef = entityCollection.doc(id)
 
@@ -38,7 +64,17 @@ export default function Entity() {
         .doc(user.id)
         .get()
 
-      const { name, resume, icon } = entityDocData.data()
+      const {
+        name,
+        resume,
+        icon,
+        composition,
+        curiosities,
+        features,
+        introduction,
+        type,
+        image,
+      } = entityDocData.data()
 
       let hasFavorite = false
 
@@ -54,7 +90,15 @@ export default function Entity() {
         resume,
         hasFavorite,
         icon,
+        composition,
+        curiosities,
+        features,
+        introduction,
+        type,
+        image,
       })
+
+      setIsLoading(false)
     }
   }
 
@@ -72,35 +116,65 @@ export default function Entity() {
     >
       <EntityPage.Header />
 
-      <View className="mt-6 flex-1 bg-white px-5">
-        <EntityPage.Heading
-          entity_id={id}
-          name={entity.name}
-          isFavorite={entity.hasFavorite}
-        />
+      {isLoading ? (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size={48} color="#000" />
+        </View>
+      ) : (
+        <>
+          <Image
+            source={{ uri: entity.image }}
+            className="-mt-[220] h-[280] w-[280] self-center"
+          />
+          <View className="mt-6 flex-1 bg-white px-5">
+            <EntityPage.Heading
+              entity_id={id}
+              name={entity.name}
+              isFavorite={entity.hasFavorite}
+            />
 
-        <Text className="mb-5 mt-10 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
-          {entity.resume}
-        </Text>
+            <Text className="mb-5 mt-10 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
+              {entity.resume}
+            </Text>
 
-        <Accordion
-          title="Introdução"
-          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
-        />
-        <Accordion
-          title="Características Físicas"
-          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
-        />
-        <Accordion
-          title="Hidrologia"
-          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
-        />
-        <Accordion
-          title="Geografia"
-          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem officia possimus voluptatibus ex. Dicta reiciendis iure, dolore voluptates exercitationem sint repellat dignissimos pariatur sit, iste nobis voluptate eum cumque molestiae?"
-          needNotDivision
-        />
-      </View>
+            <Accordion title="Introdução" text={entity.resume} />
+            <Accordion title="Características Físicas">
+              <AccordionRow text={entity.features.diameter} title="Diâmetro" />
+              <AccordionRow text={entity.features.gravity} title="Gravidade" />
+              <AccordionRow
+                text={entity.features.oneWayLightToTheSun}
+                title="voo de ida para o sol"
+              />
+              <AccordionRow
+                text={entity.features.orbitalPeriod}
+                title="Período orbital"
+              />
+              <AccordionRow
+                text={entity.features.orbitalSpeed}
+                title="Velocidade orbital"
+              />
+              <AccordionRow text={entity.features.radius} title="Raio" />
+              <AccordionRow
+                text={entity.features.rotationDuration}
+                title="Duração da rotação"
+              />
+              <AccordionRow
+                text={entity.features.sunDistance}
+                title="Distância do sol"
+              />
+              <AccordionRow
+                text={entity.features.temperature}
+                title="Temperatura"
+              />
+            </Accordion>
+            <Accordion
+              title="Curiosidades"
+              text={entity.curiosities}
+              needNotDivision
+            />
+          </View>
+        </>
+      )}
     </ScrollView>
   )
 }

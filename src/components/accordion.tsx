@@ -7,18 +7,20 @@ import {
   Platform,
 } from 'react-native'
 import Icon from '@expo/vector-icons/Feather'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 interface AccordionProps {
   title: string
-  text: string
+  text?: string | string[]
   needNotDivision?: boolean
+  children?: ReactNode
 }
 
 export function Accordion({
   text,
   title,
   needNotDivision = false,
+  children,
 }: AccordionProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -34,7 +36,7 @@ export function Accordion({
   }
 
   return (
-    <View className="mt-5">
+    <View className="mt-5 pr-3">
       <TouchableOpacity
         onPress={handleExpandedAccording}
         className="w-full flex-row items-center"
@@ -46,10 +48,22 @@ export function Accordion({
       </TouchableOpacity>
 
       {isExpanded && (
-        <View className="ml-2">
-          <Text className="mt-5 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
-            {text}
-          </Text>
+        <View className="ml-2 mt-5">
+          {children ||
+            (typeof text === 'string' ? (
+              <Text className="font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
+                {text}
+              </Text>
+            ) : (
+              text.map((text) => (
+                <View key={text} className="mt-5 flex-row items-center">
+                  <View className="mr-4 h-2 w-2 rounded-full bg-black " />
+                  <Text className="font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
+                    {text}
+                  </Text>
+                </View>
+              ))
+            ))}
         </View>
       )}
 
@@ -59,3 +73,23 @@ export function Accordion({
     </View>
   )
 }
+/* 
+{children ? (
+            children || (typeof text === 'string' ? (
+              <Text className="mt-5 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
+                {text}
+              </Text>
+            ) : (
+              text.map((text) => (
+                <View key={text} className="flex-row items-center">
+                  <View className="mr-4 h-2 w-2 rounded-full bg-black " />
+                  <Text className="mt-5 font-body text-base leading-relaxed text-brand_background opacity-[0.75]">
+                    {text}
+                  </Text>
+                </View>
+              ))
+          
+         
+          ))}
+
+*/

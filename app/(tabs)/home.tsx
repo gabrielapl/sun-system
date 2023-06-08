@@ -1,4 +1,4 @@
-import { ImageBackground, ScrollView, View } from 'react-native'
+import { BackHandler, ImageBackground, ScrollView, View } from 'react-native'
 
 import starsBg from '../../src/assets/stars.png'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -7,7 +7,7 @@ import { Categories } from '../../src/pages/home/categories'
 import { HomeContextProvider } from '../../src/context/homeContext'
 import { Input } from '../../src/components/input'
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EntitiesList } from '../../src/pages/home/entitiesList'
 
 export default function Home() {
@@ -19,6 +19,13 @@ export default function Home() {
     setSearchValue('')
     router.push(`/search/${searchValue}`)
   }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
+    // createPlanets()
+  }, [])
 
   return (
     <HomeContextProvider>
