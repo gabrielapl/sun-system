@@ -22,6 +22,37 @@ interface Planet {
   curiosities: string[]
 }
 
+const stars = [
+  {
+    name: 'Sol',
+    type: 'stars',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/sun-system-99d9f.appspot.com/o/space-entities%2Fimages%2Fsun.png?alt=media&token=09bb3c7f-7392-4902-81de-4801e1aa01bd',
+    resume:
+      'O Sol é a estrela central do Sistema Solar e fonte primária de energia.',
+    introduction:
+      'O Sol é uma estrela de sequência principal do tipo espectral G2V.',
+    icon: 'https://firebasestorage.googleapis.com/v0/b/sun-system-99d9f.appspot.com/o/space-entities%2Ficons%2Fplanets%2Fsun.svg?alt=media&token=46f74f7d-d255-4717-a4a7-14475f641c94',
+    features: {
+      orbitalPeriod: 'Milhões de anos (orbita o centro da Via Láctea)',
+      orbitalSpeed: '220 km/s',
+      rotationDuration: '25,4 dias',
+      radius: '695.700 km',
+      diameter: '1.392.700 km',
+      sunDistance: '27.000 anos-luz do centro da Via Láctea',
+      oneWayLightToTheSun: '8 minutos e 20 segundos',
+      temperature: '5.500 °C (superfície)',
+      gravity: '274 m/s² (na superfície)',
+    },
+    composition: 'Hidrogênio (73,5%) e hélio (24,9%)',
+    curiosities: [
+      'O Sol é responsável por mais de 99% da massa do Sistema Solar.',
+      'Sua energia é gerada através de reações nucleares de fusão no núcleo.',
+      'Possui uma camada externa chamada de coroa, que é visível durante um eclipse solar total.',
+    ],
+  },
+]
+
 const galaxies = [
   {
     name: 'Andrômeda',
@@ -30,7 +61,7 @@ const galaxies = [
       'A Galáxia de Andrômeda é a galáxia espiral mais próxima da Via Láctea.',
     introduction:
       'Andrômeda, também conhecida como Messier 31, é uma galáxia espiral localizada a cerca de 2,537 milhões de anos-luz da Terra.',
-    icon: 'andromeda-icon.png',
+    icon: 'https://firebasestorage.googleapis.com/v0/b/sun-system-99d9f.appspot.com/o/space-entities%2Ficons%2Fgalaxies%2Fgalaxy-svgrepo-com.svg?alt=media&token=9dae5534-bf12-49ea-b80e-bc4608ba952a',
     features: {
       orbitalPeriod: 'N/A',
       orbitalSpeed: 'N/A',
@@ -57,7 +88,7 @@ const galaxies = [
       'A Via Láctea é a galáxia onde nosso Sistema Solar está localizado.',
     introduction:
       'A Via Láctea é uma galáxia espiral barrada que abriga bilhões de estrelas, incluindo o nosso sol.',
-    icon: 'via_lactea.png',
+    icon: 'https://firebasestorage.googleapis.com/v0/b/sun-system-99d9f.appspot.com/o/space-entities%2Ficons%2Fgalaxies%2FGalaxy-595b40b65ba036ed117d2d51.svg?alt=media&token=b34d67e7-2fcf-42a6-86a2-9e1ea82863a6',
     features: {
       orbitalPeriod: '225-250 milhões de anos',
       orbitalSpeed: '220 km/s',
@@ -73,33 +104,6 @@ const galaxies = [
     curiosities: [
       'A Via Láctea contém bilhões de estrelas e é o lar do nosso Sistema Solar.',
       'A galáxia possui uma barra central de estrelas que se estende por milhares de anos-luz.',
-    ],
-  },
-  {
-    name: 'Andrômeda',
-    type: 'galaxies',
-    resume:
-      'A Galáxia de Andrômeda é a galáxia espiral mais próxima da Via Láctea.',
-    introduction:
-      'Andrômeda, também conhecida como Messier 31, é uma galáxia espiral localizada a cerca de 2,537 milhões de anos-luz da Terra.',
-    icon: 'andromeda-icon.png',
-    features: {
-      orbitalPeriod: 'N/A',
-      orbitalSpeed: 'N/A',
-      rotationDuration: 'N/A',
-      radius: '110.000 anos-luz',
-      diameter: '220.000 anos-luz',
-      sunDistance: '2,537 milhões de anos-luz',
-      oneWayLightToTheSun: '2,537 milhões de anos',
-      temperature: 'N/A',
-      gravity: 'N/A',
-    },
-    composition:
-      'Andrômeda é composta por bilhões de estrelas, nuvens de gás e poeira cósmica.',
-    curiosities: [
-      'Andrômeda é a galáxia espiral mais próxima da Via Láctea.',
-      'É possível observar a galáxia a olho nu em locais com baixa poluição luminosa.',
-      'Andrômeda está em rota de colisão com a Via Láctea e estima-se que as duas galáxias se fundirão em bilhões de anos.',
     ],
   },
 ]
@@ -336,6 +340,13 @@ const planetas: Planet[] = [
 
 export async function createPlanets() {
   const db = firestore()
+  stars.forEach((planet) => {
+    db.collection('space-entities').add(planet)
+  })
+
+  galaxies.forEach((planet) => {
+    db.collection('space-entities').add(planet)
+  })
 
   planetas.forEach((planet) => {
     db.collection('space-entities').add(planet)

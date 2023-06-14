@@ -24,7 +24,6 @@ export default function Home() {
     BackHandler.addEventListener('hardwareBackPress', () => {
       return true
     })
-    // createPlanets()
   }, [])
 
   return (
